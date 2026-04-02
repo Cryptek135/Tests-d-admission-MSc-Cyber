@@ -1,0 +1,118 @@
+Router#
+%SYS-5-CONFIG_I: Configured from console by console
+
+Router#sh run
+Building configuration...
+
+Current configuration : 1757 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.0.1 192.168.0.9
+ip dhcp excluded-address 192.168.0.51 192.168.0.254
+ip dhcp excluded-address 192.168.10.1 192.168.10.9
+ip dhcp excluded-address 192.168.10.51 192.168.10.254
+ip dhcp excluded-address 192.168.20.1 192.168.20.9
+ip dhcp excluded-address 192.168.20.51 192.168.20.254
+ip dhcp excluded-address 192.168.30.1 192.168.30.9
+ip dhcp excluded-address 192.168.30.51 192.168.30.254
+!
+ip dhcp pool VOIP
+ network 192.168.0.0 255.255.255.0
+ default-router 192.168.0.254
+ip dhcp pool PC_FIXES
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.254
+ip dhcp pool WIFI
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.254
+ip dhcp pool ADMIN
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.254
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO1941/K9 sn FTX1524H970-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.1
+ encapsulation dot1Q 1 native
+ ip address 192.168.0.254 255.255.255.0
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.254 255.255.255.0
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.254 255.255.255.0
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.254 255.255.255.0
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
