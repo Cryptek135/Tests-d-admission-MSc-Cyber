@@ -1,0 +1,33 @@
+Import-Module ActiveDirectory
+
+$csv = Import-Csv "$home\Desktop\users.csv"
+
+foreach ($ligne in $csv) {
+    # On vÃ©rifie si la ligne n'est pas vide avant de continuer
+    if ($ligne.prÃ©nom -ne $null -and $ligne.prÃ©nom -ne "") {
+        
+        $prenom = $ligne.prÃ©nom
+        $nom = $ligne.nom
+        $login = ($prenom.Substring(0,1) + $nom).ToLower()
+        $mdp = ConvertTo-SecureString "Azerty_2025!" -AsPlainText -Force
+
+        New-ADUser -Name "$prenom $nom" `
+                   -SamAccountName $login `
+                   -GivenName $prenom `
+                   -Surname $nom `
+                   -Enabled $true `
+                   -AccountPassword $mdp `
+                   -ChangePasswordAtLogon $true `
+                   -Path "CN=Users,DC=laplateforme,DC=io"
+
+        # On n'ajoute aux groupes que si le login a bien Ã©tÃ© crÃ©Ã©
+        if ($ligne.groupe1) { Add-ADGroupMember -Identity $ligne.groupe1 -Members $login }
+        if ($ligne.groupe2) { Add-ADGroupMember -Identity $ligne.groupe2 -Members $login }
+        if ($ligne.groupe3) { Add-ADGroupMember -Identity $ligne.groupe3 -Members $login }
+        if ($ligne.groupe4) { Add-ADGroupMember -Identity $ligne.groupe4 -Members $login }
+        if ($ligne.groupe5) { Add-ADGroupMember -Identity $ligne.groupe5 -Members $login }
+        if ($ligne.groupe6) { Add-ADGroupMember -Identity $ligne.groupe6 -Members $login }
+    }
+}
+
+Write-Host "TerminÃ©."
